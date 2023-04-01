@@ -114,8 +114,6 @@ int main(int argc, char const *argv[])
 
     for(;;){
 
-        char msg[4096] = "";
-
         sin_size = sizeof their_addr;
         incoming_socket_fd = accept(ws.sockfd, (struct sockaddr *)&their_addr, &sin_size);
         if (incoming_socket_fd == -1){
@@ -123,11 +121,31 @@ int main(int argc, char const *argv[])
             continue;
         }// if accept errored
 
+        char msg[4096] = "";
+        char *method = "";
+		char *route = "";
+        
+
         read(incoming_socket_fd, msg, 4095);
-        printf("%s\n", msg);//print incoming http request
+        printf("HTTP Request Recieved\n");
+        
+
+		char *header = strtok(msg, "\n");
+		char *token = strtok(header, " ");
+
+        method = token;
+        token = strtok(NULL, " ");
+        route = token;
+
+		printf("Method: %s\n", method);
+		printf("Route: %s\n", route);
 
         char *response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
         char *html_page = parse_html_file("index.html"); //TEMP, CHANGE THIS WHEN IMPLEMENTING ROUTING
+
+
+
+
 
         write(incoming_socket_fd, response, strlen(response));
         write(incoming_socket_fd, html_page, strlen(html_page));
