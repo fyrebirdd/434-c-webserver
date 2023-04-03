@@ -86,7 +86,7 @@ struct web_server create_web_server(char* hostname, char* port){
         perror("listen");
         exit(1);
     }//if it fails to start listening on the socket
-    printf("Server initialized on http://%s/%s\n", hostname, port);
+    printf("Server initialized on http://%s:%s\n", hostname, port);
     printf("Waiting for connections....\n");
     return ws;
 }
@@ -125,10 +125,17 @@ int main(int argc, char const *argv[])
         char *method = "";
 		char *route = "";
         
+        
+        
 
         read(incoming_socket_fd, msg, 4095);
+        if (strcmp(msg,"") == 0){
+            close(incoming_socket_fd);
+            continue;
+        }
+
         printf("HTTP Request Recieved\n");
-        
+        printf("%s\n", msg);
 
 		char *header = strtok(msg, "\n");
 		char *token = strtok(header, " ");
@@ -141,7 +148,7 @@ int main(int argc, char const *argv[])
 		printf("Route: %s\n", route);
 
         char *response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
-        char *html_page = parse_html_file("index.html"); //TEMP, CHANGE THIS WHEN IMPLEMENTING ROUTING
+        char *html_page = parse_html_file("index.html");
 
 
 
