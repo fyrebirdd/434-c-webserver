@@ -18,7 +18,7 @@ struct Route* init(char* path, char* file){
 
 void add(struct Route* r, char* path, char* file){
     if(strcmp(path, r->path) == 0){
-        printf("ERROR: this tree already containts %s\n", path);
+        printf("ERROR: this tree already contains %s\n", path);
     }else if (r->next == NULL)
     {
         r->next = init(path, file);
@@ -28,11 +28,13 @@ void add(struct Route* r, char* path, char* file){
 }
 
 struct Route* get(struct Route* r, char* path){
-    if (r->next == NULL){
-        printf("ERROR: this tree does not containt %s\n", path);
-        return NULL;
-    }else if(strcmp(path, r->path) == 0){
+    
+    if(strcmp(path, r->path) == 0){
         return r;
+    }
+    else if (r->next == NULL){
+        printf("ERROR: this tree does not contain %s\n", path);
+        return NULL;
     }else{
         return get(r->next, path);
     }

@@ -13,4 +13,4 @@ routes.o: routes.c routes.h
 	$(CC) $(CFLAGS) routes.c -o routes.o
 
 clean:
-	rm -rf *.o webserver
+	rm -rf *.o

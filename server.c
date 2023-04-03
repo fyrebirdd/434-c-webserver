@@ -96,6 +96,9 @@ int main(int argc, char const *argv[])
 {
 
     struct Route* routes = init("/", "index.html");
+    add(routes, "/about", "about.html");
+    add(routes, "/contact", "contact.html");
+    
 
 
     if (argc != 2){
@@ -137,9 +140,6 @@ int main(int argc, char const *argv[])
             continue;
         }
 
-        printf("HTTP Request Recieved\n");
-        printf("%s\n", msg);
-
 		char *header = strtok(msg, "\n");
 		char *token = strtok(header, " ");
 
@@ -147,8 +147,7 @@ int main(int argc, char const *argv[])
         token = strtok(NULL, " ");
         route = token;
 
-		printf("Method: %s\n", method);
-		printf("Route: %s\n", route);
+		printf("%s: %s\n", method, route);
 
         char *response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
 
