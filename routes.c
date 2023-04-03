@@ -23,6 +23,7 @@ void add(struct Route* r, char* path, char* file){
     {
         r->next = init(path, file);
     }else{
+        printf("added %s", path);
         add(r->next, path, file);
     }
 }
