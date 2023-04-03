@@ -1,14 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "routes.h"
 
-struct Route{
-
-    char* path;
-    char* file;
-
-    struct Route *next;
-};
 
 struct Route* init(char* path, char* file){
     struct Route* start = (struct Route*) malloc(sizeof(struct Route));
@@ -22,7 +16,7 @@ struct Route* init(char* path, char* file){
 }
 
 
-struct Route* add(struct Route* r, char* path, char* file){
+void add(struct Route* r, char* path, char* file){
     if(strcmp(path, r->path) == 0){
         printf("ERROR: this tree already containts %s\n", path);
     }else if (r->next == NULL)
@@ -30,5 +24,16 @@ struct Route* add(struct Route* r, char* path, char* file){
         r->next = init(path, file);
     }else{
         add(r->next, path, file);
-    }  
+    }
+}
+
+struct Route* get(struct Route* r, char* path){
+    if (r->next == NULL){
+        printf("ERROR: this tree does not containt %s\n", path);
+        return NULL;
+    }else if(strcmp(path, r->path) == 0){
+        return r;
+    }else{
+        return get(r->next, path);
+    }
 }

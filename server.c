@@ -12,6 +12,7 @@
 #include <signal.h>
 
 #include "server.h"
+#include "routes.h"
 
 
 char *parse_html_file(char* file_name){
@@ -94,7 +95,9 @@ struct web_server create_web_server(char* hostname, char* port){
 int main(int argc, char const *argv[])
 {
 
-    
+    struct Route* routes = init("/", "index.html");
+
+
     if (argc != 2){
         printf("Proper Usage: ./server PORT");
         exit(1);
@@ -148,9 +151,14 @@ int main(int argc, char const *argv[])
 		printf("Route: %s\n", route);
 
         char *response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
-        char *html_page = parse_html_file("index.html");
 
+        struct Route* page;
+        if((page = get(routes, route)) == NULL){
+            close(incoming_socket_fd);
+            continue;
+        }
 
+        char *html_page = parse_html_file(page->file); //TEMP, CHANGE THIS WHEN IMPLEMENTING ROUTING
 
 
 
