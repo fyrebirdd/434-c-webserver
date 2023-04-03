@@ -150,20 +150,21 @@ int main(int argc, char const *argv[])
 		printf("%s: %s\n", method, route);
 
         char *response = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
+        char *responsefof = "HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n";
 
         struct Route* page;
         if((page = get(routes, route)) == NULL){
+             char *html_page = parse_html_file("notfound.html");
+            write(incoming_socket_fd, responsefof, strlen(responsefof));
+            write(incoming_socket_fd, html_page, strlen(html_page));
             close(incoming_socket_fd);
-            continue;
+        }else{
+            char *html_page = parse_html_file(page->file);
+            write(incoming_socket_fd, response, strlen(response));
+            write(incoming_socket_fd, html_page, strlen(html_page));
+            close(incoming_socket_fd);
         }
 
-        char *html_page = parse_html_file(page->file); //TEMP, CHANGE THIS WHEN IMPLEMENTING ROUTING
-
-
-
-        write(incoming_socket_fd, response, strlen(response));
-        write(incoming_socket_fd, html_page, strlen(html_page));
-        close(incoming_socket_fd);
     }
     return 0;
 }

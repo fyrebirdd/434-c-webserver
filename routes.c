@@ -32,8 +32,7 @@ struct Route* get(struct Route* r, char* path){
     
     if(strcmp(path, r->path) == 0){
         return r;
-    }
-    else if (r->next == NULL){
+    }else if (r->next == NULL){
         printf("ERROR: this tree does not contain %s\n", path);
         return NULL;
     }else{
